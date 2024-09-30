@@ -1,0 +1,4 @@
+kdev-utils Configuration
+========================
+
+Config should be added to the file `~/.kdev/kdevutils.conf` and an example is provided (`kdevutils.conf`).
