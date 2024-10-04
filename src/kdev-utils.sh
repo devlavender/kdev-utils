@@ -35,9 +35,14 @@
 # along with kdev-utils. If not, see <https://www.gnu.org/licenses/>
 # and <https://www.gnu.org/licenses/gpl-3.0.html>.
 
+LOG_FILE="/tmp/kdevutils.log"
+
 ___debug(){
         if [ "$DEBUG" = 1 ]; then
-                echo -e "$*"
+                echo -e "$*" >&2
+        fi
+        if [ "$DEBUG_LOG" = 1 ]; then
+                echo -e "${*}" >> "$LOG_FILE"
         fi
 }
 
