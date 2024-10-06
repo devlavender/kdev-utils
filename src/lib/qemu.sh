@@ -6,8 +6,8 @@
 #
 # Author: Ágatha Isabelle Chris Moreira Guedes <code@agatha.dev>
 #
-# @file: virtiofsd.sh
-# @description virtiofsd tools
+# @file: qemu.sh.sh
+# @description qemu-related tools
 #
 ########################################################################
 #
