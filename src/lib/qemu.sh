@@ -37,6 +37,7 @@
 
 # Dependencies
 ku_load_module virtiofsd
+ku_load_module root-trees
 
 VM_ARCH="$KU_ARCH"
 VM_RAM="2G"

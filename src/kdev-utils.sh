@@ -93,6 +93,7 @@ KU_CONFIG_MAIN="$KU_CONFIG_PATH/kdevutils.conf"
 VIRTIOFSD=$(___get_path virtiofsd /usr/lib/virtiofsd)
 ROOT_EXEC=$(___get_path sudo /bin/sudo)
 VM_BASE="$KU_BASE_DIR/var/vms"
+RT_BASE="$KU_BASE_DIR/var/vms"
 VIOFSD_GROUP="$(grep "${GROUPS[0]}" /etc/group|cut -d: -f1)"
 
 AUTOLOAD_MODULES=()
