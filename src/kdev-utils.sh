@@ -71,12 +71,15 @@ ___get_path(){
 
 ___load_cfg(){
         . "$1"
-        return $?
+        RET=$?
+        ___debug "Load of '$1' returned $RET"
+        return $RET
 }
 
 ___load_cfg_if_exists(){
         test -f "$1" && ___load_cfg "$1"
-        return $?
+        RET=$?
+        return $RET
 }
 
 # Non-configurable values:
