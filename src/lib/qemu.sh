@@ -62,18 +62,18 @@ __qemu_ld_vm_conf(){
 }
 
 __qemu_run_vm(){
-        ARGS=( "${@}" )
-        VM_NAME="$1"
+        local ARGS=( "${@}" )
+        local VM_NAME="$1"
         shift 1
-        KERNEL_PATH="$1"
+        local KERNEL_PATH="$1"
         shift 1
-        INIT_PATH="$1"
+        local INIT_PATH="$1"
         shift 1
-        EXTRA_CMDLINE="$1"
+        local EXTRA_CMDLINE="$1"
         shift 1
-        RMDR=$(( ${#ARGS[@]} - 4))
-        EXTRA_ARGS=( "${ARGS[@]:4:$RMDR}" )
-        CMD="$QEMU_PREFIX$VM_ARCH"
+        local RMDR=$(( ${#ARGS[@]} - 4))
+        local EXTRA_ARGS=( "${ARGS[@]:4:$RMDR}" )
+        local CMD="$QEMU_PREFIX$VM_ARCH"
 
         INIT_APPEND=""
         if [ "$INIT_PATH" != "" ]; then
@@ -84,6 +84,7 @@ __qemu_run_vm(){
         ___debug "VM_NAME=$VM_NAME KERNEL_PATH=$KERNEL_PATH" \
                 "INIT_PATH=$INIT_PATH EXTRA_CMDLINE=$EXTRA_CMDLINE" \
                 "RMDR=$RMDR SOCK=$SOCK EXTRA_ARGS=${EXTRA_ARGS[*]}"
+        ___debug_array ARGS "${ARGS[@]}"
         ___debug_array "EXTRA_ARGS" "${EXTRA_ARGS[@]}"
         ___debug_array "VM_CONSOLE_OPTS" "${VM_CONSOLE_OPTS[@]}"
         ___debug "$CMD" -m "$VM_RAM" \
@@ -97,7 +98,7 @@ __qemu_run_vm(){
                 -kernel "$KERNEL_PATH" \
                 -append \
                 "${VM_KERNEL_CMDLINE[*]} $INIT_APPEND $EXTRA_CMDLINE" \
-                "${EXTRA_ARGS[@]}"
+                "${VM_EXTRA_ARGS[@]}" "${EXTRA_ARGS[@]}"
         "$CMD" -m "$VM_RAM" \
                 -object "$VM_MEM_BE_PREFIX$VM_RAM$VM_MEM_BE_SUFIX" \
                 -numa node,memdev=mem \
@@ -108,9 +109,9 @@ __qemu_run_vm(){
                 ${VM_CONSOLE_OPTS[*]} \
                 -kernel "$KERNEL_PATH" \
                 -append \
-                "${VM_KERNEL_CMDLINE[*]} $INIT_APPEND $EXTRA_CMDLINE" \
-                "${EXTRA_ARGS[@]}"
-        reset
+                "${VM_KERNEL_CMDLINE[*]} $INIT_APPEND $HOST_CONSOLE_APPEND $EXTRA_CMDLINE" \
+                "${VM_EXTRA_ARGS[@]}" "${EXTRA_ARGS[@]}"
+        #reset
 }
 
 ku_qemu(){
@@ -119,5 +120,11 @@ ku_qemu(){
 
 ku_qemu_bashinit(){
         #ku_qemu_bashinit
-        ku_qemu "$1" "$2" "init=/bin/bash" "$3" "${@}"
+        local ARGS=( "${@}" )
+        local RMDR=$(( ${#ARGS[@]} - 3))
+        local EXTRA_ARGS=( "${ARGS[@]:3:$RMDR}" )
+        ___debug "ku_qemu_bashinit(${#ARGS[@]} args): RMDR=$RMDR"
+        ___debug_array ARGS "${ARGS[@]}"
+        ___debug_array EXTRA_ARGS "${EXTRA_ARGS[@]}"
+        ku_qemu "$1" "$2" "/bin/bash" "$3" "${EXTRA_ARGS[@]}"
 }
